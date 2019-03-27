@@ -28,7 +28,4 @@ router.get('/cart', (req, res) => {
 });
 
 
-// let path1 = path.join(__dirname, '../' + '/views/page/index.html');
-// console.log(path1);
-
 module.exports = router;

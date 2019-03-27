@@ -5,7 +5,7 @@ module.exports = {
     const bodyParser = require('body-parser');
     app.use(bodyParser.urlencoded({
       limit: '50mb',
-      extended: true
+      extended: false
     }));
     app.use(bodyParser.json({
       limit: '50mb'

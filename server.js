@@ -10,15 +10,16 @@ database.connectToServer();
 const package = require('./config/package');
 package.parseData(app);
 
-
 // use css, js 
 app.use(express.static(path.join(__dirname + '/views/public')));
 
-// render
+// render view
 const renderView = require('./routes/renderView');
 app.use('/', renderView);
 
-
+// render user 
+const userView = require('./routes/user');
+app.use('/user', userView);
 
 
 let PORT = 5000;
