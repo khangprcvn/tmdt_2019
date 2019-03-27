@@ -4,21 +4,21 @@ module.exports = {
 
   // create new user 
   // TODO: check same user
+
   signUp: (req, res) => {
     const hashPassword = bcrypt.hash(req.body.password, 10);
     const username = req.body.username;
     const email = req.body.email;
     hashPassword.then(password => {
-      const user = new User({
+      User.create({
         username,
         email,
         password
-      });
-      user.save(err => {
-        if (err) {
-          return next(err);
-        }
-        res.send("User created successfully")
+      }).then(user => {
+        req.session.user = user._id;
+        res.redirect('/user/login');
+      }).catch(err => {
+        res.redirect('/user/signup');
       })
     }).catch(err => {
       console.log(err);
@@ -29,22 +29,20 @@ module.exports = {
   logIn: (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    console.log(password);
     // check username and password in database
     User.findOne({
       username
     }).then(user => {
-      console.log(user);
       bcrypt.compare(password, user.password, (err, result) => {
         if (result) {
-          console.log(true);
+          req.session.user = user._id;
+          res.redirect('/user/dashboard');
         } else {
-          console.log(false);
+          res.redirect('/user/login');
         }
       })
     }).catch(err => {
       console.log(err);
     })
-    res.redirect('/user/signup');
   }
 }
